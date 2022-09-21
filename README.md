@@ -18,8 +18,8 @@ would be the ideal medium for this project.
 
 ## Project Source
 We wanted to build this application because as college students we have all had roommates at 
-one point or another and sometimes it is either hard to keep track of all the chores that may 
-need to be done around the house and if everyone has been doing their fair share of work.
+one point or another, and sometimes it is hard to keep track of all the chores that may 
+need done around the house and if everyone has been doing their fair share of work.
 
 ## Project Objectives/Goals
 - Create a group where others can join by the group code
