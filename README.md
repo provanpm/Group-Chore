@@ -35,20 +35,17 @@ between housemates and more.
 
 ## Team Members and Responsibilities
 **Database Administrator and Security Analyst**: Ben Miller
-Responsible for 
 - Designing the database architecture
 - Implementing the database in Firebase
 - Analyzing and implementing security measures
 
 **Backend Software Developer**: Bipal Goyal
-Responsible for
 - Designing the architecture in code
 - Implementing interfaces, 
 - provide mockup stubs
 - actual implementation of interfaces
 
 **UI Specialist and Project Manager**: Paul Provan
-Responsible for
 - Deciding the value features for the application
 - Assigning tasks to teammates and determine deadlines
 - Create milestones within some project management software
