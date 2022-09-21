@@ -1,0 +1,36 @@
+{
+  "project_info": {
+    "project_number": "467895118867",
+    "project_id": "group-chore-86903",
+    "storage_bucket": "group-chore-86903.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467895118867:ios:8074f716b4b60c8f78a3e6",
+        "android_client_info": {
+          "package_name": "com.provalone.groupchore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467895118867-vsvbn8c1vvveet8aeol1fcibban0ri3a.apps.googleusercontent.com"
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGKOsbamcgZxNvPkI7aDj6vjMbeelk4ws"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 0
+        },
+        "appinvite_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

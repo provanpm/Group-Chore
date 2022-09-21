@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "467895118867",
+    "project_id": "group-chore-86903",
+    "storage_bucket": "group-chore-86903.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467895118867:android:0c2bc41e0a9642bd78a3e6",
+        "android_client_info": {
+          "package_name": "com.provalone.groupchore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467895118867-pp71gjrq71p23ak90t8n0sr8ju4mvjjt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN4iyfCjnmp3Fhtx_qnssZ0U5LPC45Qfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467895118867-pp71gjrq71p23ak90t8n0sr8ju4mvjjt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "467895118867-vsvbn8c1vvveet8aeol1fcibban0ri3a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.provalone.groupchore"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
