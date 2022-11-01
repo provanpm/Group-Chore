@@ -41,6 +41,11 @@ public class CreateChore : MonoBehaviour
         previewTitle.text = choreTitle.text;
     }
 
+    public void cancelAddChore()
+    {
+        SceneManager.LoadScene("Group Creation");
+    }
+
     public void confirmAddChore()
     {
         newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(previewTitle.text, previewIcon.GetComponent<Image>().sprite));
