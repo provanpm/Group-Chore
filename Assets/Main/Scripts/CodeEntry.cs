@@ -84,7 +84,7 @@ public class CodeEntry : MonoBehaviour
                 }
                 else
                 {
-                    feedbackText.text = "Group not found";
+                    feedbackText.text = "Group not found!";
                 }
             });
         }
