@@ -5,6 +5,7 @@ using UnityEngine;
 using Firebase.Firestore;
 using Firebase.Extensions;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CodeEntry : MonoBehaviour
 {
@@ -18,30 +19,8 @@ public class CodeEntry : MonoBehaviour
 
     void Start()
     {
-        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var stringChars = new char[8];
-        var random = new System.Random();
-
-        for (int i = 0; i < stringChars.Length; i++)
-        {
-            stringChars[i] = chars[random.Next(chars.Length)];
-        }
-
-        string finalString = new String(stringChars);
-
         db = FirebaseFirestore.DefaultInstance;
         colRef = db.Collection("Groups");
-
-        Dictionary<string, string> newGroup = new Dictionary<string, string>
-        {
-            { "Code", finalString },
-            { "Group Name", "Test Group" },
-            { "Group Owner", "Paul" },
-        };
-
-        colRef.Document(finalString).SetAsync(newGroup).ContinueWithOnMainThread(task => {
-            Debug.Log("Success.");
-        });
     }
 
     public void codeFormatCheck()
@@ -92,5 +71,10 @@ public class CodeEntry : MonoBehaviour
         {
             feedbackText.text = "Enter valid code.";
         }
+    }
+
+    public void toCreateGroup()
+    {
+        SceneManager.LoadScene("Group Creation");
     }
 }
