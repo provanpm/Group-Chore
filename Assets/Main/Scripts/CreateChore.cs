@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Firebase.Firestore;
-using Firebase.Extensions;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +15,7 @@ public class CreateChore : MonoBehaviour
     public TMP_InputField choreTitle;
     public GameObject previewIcon;
     public TMP_Text previewTitle;
+    public GameObject Warning;
 
     void Start()
     {
@@ -48,7 +47,31 @@ public class CreateChore : MonoBehaviour
 
     public void confirmAddChore()
     {
-        newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(previewTitle.text, previewIcon.GetComponent<Image>().sprite));
-        SceneManager.LoadScene("Group Creation");
+        string warningText = "These fields are required:";
+        if (previewTitle.text == "")
+        {
+            warningText += "\nChore Title";
+        }
+        if (previewIcon.GetComponent<Image>().sprite.name == "EMPTY")
+        {
+            warningText += "\nChore Icon";
+        }
+
+        if (warningText != "These fields are required:")
+        {
+            Warning.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = warningText;
+            Warning.SetActive(true);
+        }
+        else
+        {
+            newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(previewTitle.text, previewIcon.GetComponent<Image>().sprite));
+            SceneManager.LoadScene("Group Creation");
+        }
+    }
+
+    public void closeWarning()
+    {
+        Warning.SetActive(false);
+        Warning.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = "";
     }
 }
