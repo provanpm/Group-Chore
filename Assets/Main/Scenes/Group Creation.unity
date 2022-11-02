@@ -428,12 +428,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 140
+  m_fontSize: 120
   m_fontSizeBase: 140
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 140
+  m_fontSizeMax: 120
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -1282,6 +1282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac5d6f986f5b48d488295eec01a8b1a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupTitle: {fileID: 1510527749}
   newChoreList: {fileID: 820502585}
   choreTemplate: {fileID: 901426828}
   choreListParent: {fileID: 1918350469}

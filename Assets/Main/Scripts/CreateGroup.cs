@@ -7,12 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class CreateGroup : MonoBehaviour
 {
+    public TMP_InputField groupTitle;
     public GameObject newChoreList;
     public GameObject choreTemplate;
     public GameObject choreListParent;
 
     void Start()
     {
+        groupTitle.text = newChoreList.GetComponent<NewChoreList>().getTitle();
+
         foreach (Chore currChore in newChoreList.GetComponent<NewChoreList>().getList())
         {
             GameObject newChore = GameObject.Instantiate(choreTemplate) as GameObject;
@@ -26,6 +29,7 @@ public class CreateGroup : MonoBehaviour
 
     public void editChore(GameObject currChore)
     {
+        newChoreList.GetComponent<NewChoreList>().setTitle(groupTitle.text);
         newChoreList.GetComponent<NewChoreList>().setChore(new Chore(currChore.transform.GetChild(1).GetComponent<TMP_Text>().text, currChore.transform.GetChild(0).GetComponent<Image>().sprite));
         SceneManager.LoadScene("Chore Creation");
     }
@@ -37,6 +41,7 @@ public class CreateGroup : MonoBehaviour
 
     public void toCreateChore()
     {
+        newChoreList.GetComponent<NewChoreList>().setTitle(groupTitle.text);
         newChoreList.GetComponent<NewChoreList>().setChore(new Chore());
         SceneManager.LoadScene("Chore Creation");
     }

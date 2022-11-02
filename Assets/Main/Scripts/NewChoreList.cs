@@ -6,6 +6,17 @@ public class NewChoreList : MonoBehaviour
 {
     static private List<Chore> newChoreList = new List<Chore>();
     static private Chore choreToEdit = new Chore();
+    static private string groupTitle = "";
+
+    public void setTitle(string newTitle)
+    {
+        groupTitle = newTitle;
+    }
+
+    public string getTitle()
+    {
+        return groupTitle;
+    }
 
     public void setChore(Chore newChore)
     {
