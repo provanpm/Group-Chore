@@ -19,6 +19,13 @@ public class CreateChore : MonoBehaviour
 
     void Start()
     {
+        if (newChoreList.GetComponent<NewChoreList>().getChore().Title != "")
+        {
+            previewTitle.text = newChoreList.GetComponent<NewChoreList>().getChore().Title;
+            choreTitle.text = newChoreList.GetComponent<NewChoreList>().getChore().Title;
+            previewIcon.GetComponent<Image>().sprite = newChoreList.GetComponent<NewChoreList>().getChore().Icon;
+        }
+
         foreach (Sprite currSprite in Icons)
         {
             GameObject newIcon = GameObject.Instantiate(iconTemplate) as GameObject;
@@ -47,24 +54,42 @@ public class CreateChore : MonoBehaviour
 
     public void confirmAddChore()
     {
-        string warningText = "These fields are required:";
-        if (previewTitle.text == "")
+        string warningText = "";
+
+        for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
         {
-            warningText += "\nChore Title";
-        }
-        if (previewIcon.GetComponent<Image>().sprite.name == "EMPTY")
-        {
-            warningText += "\nChore Icon";
+            if (newChoreList.GetComponent<NewChoreList>().getList()[i].Title == previewTitle.text && previewTitle.text != newChoreList.GetComponent<NewChoreList>().getChore().Title)
+            {
+                warningText = "Duplicate chore title detected, please choose new title.";
+            }
         }
 
-        if (warningText != "These fields are required:")
+        if (previewTitle.text == "" || previewIcon.GetComponent<Image>().sprite.name == "EMPTY")
+        {
+            warningText = "Please enter required fields.";
+        }
+
+        if (warningText != "")
         {
             Warning.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = warningText;
             Warning.SetActive(true);
         }
         else
         {
-            newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(previewTitle.text, previewIcon.GetComponent<Image>().sprite));
+            if (newChoreList.GetComponent<NewChoreList>().getChore().Title != "")
+            {
+                for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
+                {
+                    if (newChoreList.GetComponent<NewChoreList>().getList()[i].Equals(newChoreList.GetComponent<NewChoreList>().getChore()))
+                    {
+                        newChoreList.GetComponent<NewChoreList>().getList()[i] = new Chore(previewTitle.text, previewIcon.GetComponent<Image>().sprite);
+                    }
+                }
+            }
+            else
+            {
+                newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(previewTitle.text, previewIcon.GetComponent<Image>().sprite));
+            }
             SceneManager.LoadScene("Group Creation");
         }
     }

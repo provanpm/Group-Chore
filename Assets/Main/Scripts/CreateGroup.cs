@@ -24,8 +24,20 @@ public class CreateGroup : MonoBehaviour
         }
     }
 
+    public void editChore(GameObject currChore)
+    {
+        newChoreList.GetComponent<NewChoreList>().setChore(new Chore(currChore.transform.GetChild(1).GetComponent<TMP_Text>().text, currChore.transform.GetChild(0).GetComponent<Image>().sprite));
+        SceneManager.LoadScene("Chore Creation");
+    }
+
+    public void deleteChore()
+    {
+
+    }
+
     public void toCreateChore()
     {
+        newChoreList.GetComponent<NewChoreList>().setChore(new Chore());
         SceneManager.LoadScene("Chore Creation");
     }
 }

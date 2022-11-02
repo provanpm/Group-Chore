@@ -5,6 +5,17 @@ using UnityEngine;
 public class NewChoreList : MonoBehaviour
 {
     static private List<Chore> newChoreList = new List<Chore>();
+    static private Chore choreToEdit = new Chore();
+
+    public void setChore(Chore newChore)
+    {
+        choreToEdit = newChore;
+    }
+
+    public Chore getChore()
+    {
+        return choreToEdit;
+    }
 
     public void setList(List<Chore> newList)
     {
