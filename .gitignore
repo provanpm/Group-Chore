@@ -71,3 +71,4 @@ crashlytics-build.properties
 **/Assets/Firebase
 **/Assets/Firebase.meta
 **/UserSettings
+Assets/GoogleService-Info.plist.meta
