@@ -49,6 +49,12 @@ crashlytics-build.properties
 
 **/Assets/Editor Default Resources
 **/Assets/Editor Default Resources.meta
+**/Assets/ExternalDependencyManager
+**/Assets/ExternalDependencyManager.meta
+**/Assets/GoogleService-Info.plist
+**/Assets/GoogleService-Info.plis.meta
+**/Assets/google-services.json
+**/Assets/google-services.json.meta
 **/Assets/Firebase
 **/Assets/Firebase.meta
 **/UserSettings
