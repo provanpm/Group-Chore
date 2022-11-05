@@ -72,3 +72,9 @@ crashlytics-build.properties
 **/Assets/Firebase.meta
 **/UserSettings
 Assets/GoogleService-Info.plist.meta
+Assets/Plugins/iOS/Firebase/libFirebaseCppApp.a
+Assets/Plugins/iOS/Firebase/libFirebaseCppApp.a.meta
+Assets/Plugins/iOS/Firebase/libFirebaseCppFirestore.a
+Assets/Plugins/iOS/Firebase/libFirebaseCppFirestore.a.meta
+Assets/StreamingAssets/google-services-desktop.json
+Assets/StreamingAssets/google-services-desktop.json.meta
