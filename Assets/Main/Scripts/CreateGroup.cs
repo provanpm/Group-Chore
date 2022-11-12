@@ -80,12 +80,12 @@ public class CreateGroup : MonoBehaviour
 
         DocumentReference newGroupRef = db.Document($"Groups/{finalCode}");
         Dictionary<string, object> newGroupData = new Dictionary<string, object>
-            {
-                { "Group Title", groupTitle.text }
-            };
+        {
+            { "Group Title", groupTitle.text }
+        };
 
         newGroupRef.SetAsync(newGroupData).ContinueWithOnMainThread(task => {
-            Debug.Log("AAAAAAAAAAAAAAAAA");
+            Debug.Log("Group Successfully Added");
         });
 
         foreach (Chore currChore in newChoreList.GetComponent<NewChoreList>().getList())
@@ -97,7 +97,7 @@ public class CreateGroup : MonoBehaviour
                 { "Chore Description", "Test chore desc" }
             };
             newChoreRef.SetAsync(newChoreData).ContinueWithOnMainThread(task => {
-                Debug.Log("AAAAAAAAAAAAAAAAA");
+                Debug.Log("Chore Successfully Added");
             });
         }
 
