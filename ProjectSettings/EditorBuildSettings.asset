@@ -8,9 +8,9 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Main/Scenes/Chore Creation.unity
-    guid: ef710427cd5688f46b3e06a4241892b6
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Main/Scenes/Code Entry.unity
     guid: 3fc8acdd13e6c734bafef6554d6fdbcd

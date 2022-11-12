@@ -74,44 +74,34 @@ public class CreateGroup : MonoBehaviour
             stringChars[i] = chars[random.Next(chars.Length)];
         }
 
-        string finalString = new String(stringChars);
+        string finalCode = new String(stringChars);
 
-        Dictionary<string, string> newGroup = new Dictionary<string, string>
-        {
-            { "Code", finalString },
-            { "Group Name", groupTitle.text }
-        };
+        db = FirebaseFirestore.DefaultInstance;
 
-        Dictionary<string, string> newChores = new Dictionary<string, string>();
+        DocumentReference newGroupRef = db.Document($"Groups/{finalCode}");
+        Dictionary<string, object> newGroupData = new Dictionary<string, object>
+            {
+                { "Group Title", groupTitle.text }
+            };
+
+        newGroupRef.SetAsync(newGroupData).ContinueWithOnMainThread(task => {
+            Debug.Log("AAAAAAAAAAAAAAAAA");
+        });
 
         foreach (Chore currChore in newChoreList.GetComponent<NewChoreList>().getList())
         {
-            newChores.Add(currChore.Title, currChore.Icon.name);
+            DocumentReference newChoreRef = db.Document($"Groups/{finalCode}/Chores/{currChore.Title}");
+            Dictionary<string, object> newChoreData = new Dictionary<string, object>
+            {
+                { "Icon ID", currChore.Title },
+                { "Chore Description", "Test chore desc" }
+            };
+            newChoreRef.SetAsync(newChoreData).ContinueWithOnMainThread(task => {
+                Debug.Log("AAAAAAAAAAAAAAAAA");
+            });
         }
 
-        db = FirebaseFirestore.DefaultInstance;
-        DocumentReference groupRef = db.Collection("Groups").Document(finalString);
-
-        groupRef.SetAsync(newGroup).ContinueWithOnMainThread(task => {
-            DocumentReference newChore = groupRef.Collection("Chores").Document("Chores");
-            newChore.SetAsync(newChores).ContinueWithOnMainThread(task => {
-                //Debug.Log("AAAAAAAAAAAAA");
-            });
-
-            //foreach (KeyValuePair<string, string> currChore in newChores)
-            //{
-            //    DocumentReference newChore = groupRef.Collection("Chores").Document(currChore.Key);
-            //    newChore.SetAsync(currChore).ContinueWithOnMainThread(task => {
-            //        Debug.Log("AAAAAAAAAAAAA");
-            //    });
-            //}
-        });
-
-
-
-
-
-
+        Debug.Log(finalCode);
 
         //string warningText = "";
 
