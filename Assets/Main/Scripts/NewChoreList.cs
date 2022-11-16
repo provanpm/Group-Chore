@@ -42,4 +42,11 @@ public class NewChoreList : MonoBehaviour
     {
         return newChoreList;
     }
+
+    public void resetData()
+    {
+        newChoreList = new List<Chore>();
+        choreToEdit = new Chore();
+        groupTitle = "";
+    }
 }

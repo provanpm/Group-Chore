@@ -28,18 +28,17 @@ public class CreateGroup : MonoBehaviour
             GameObject newChore = GameObject.Instantiate(choreTemplate) as GameObject;
             newChore.transform.GetChild(0).GetComponent<Image>().sprite = currChore.Icon;
             newChore.transform.GetChild(1).GetComponent<TMP_Text>().text = currChore.Title;
+            newChore.transform.GetChild(2).GetComponent<TMP_Text>().text = currChore.Description;
             newChore.transform.SetParent(choreListParent.transform);
             newChore.transform.localScale = new Vector3(1, 1, 1);
             newChore.SetActive(true);
         }
-
-        
     }
 
     public void editChore(GameObject currChore)
     {
         newChoreList.GetComponent<NewChoreList>().setTitle(groupTitle.text);
-        newChoreList.GetComponent<NewChoreList>().setChore(new Chore(currChore.transform.GetChild(1).GetComponent<TMP_Text>().text, currChore.transform.GetChild(0).GetComponent<Image>().sprite));
+        newChoreList.GetComponent<NewChoreList>().setChore(new Chore(currChore.transform.GetChild(1).GetComponent<TMP_Text>().text, currChore.transform.GetChild(0).GetComponent<Image>().sprite, currChore.transform.GetChild(2).GetComponent<TMP_Text>().text));
         SceneManager.LoadScene("Chore Creation");
     }
 
@@ -47,7 +46,7 @@ public class CreateGroup : MonoBehaviour
     {
         for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
         {
-            if (newChoreList.GetComponent<NewChoreList>().getList()[i].Equals(new Chore(currChore.transform.GetChild(1).GetComponent<TMP_Text>().text, currChore.transform.GetChild(0).GetComponent<Image>().sprite)))
+            if (newChoreList.GetComponent<NewChoreList>().getList()[i].Title == currChore.transform.GetChild(1).GetComponent<TMP_Text>().text)
             {
                 newChoreList.GetComponent<NewChoreList>().getList().RemoveAt(i);
                 break;
@@ -65,6 +64,33 @@ public class CreateGroup : MonoBehaviour
 
     public void confirmCreateGroup()
     {
+        string warningText = "";
+
+        if (groupTitle.text == "")
+        {
+            warningText = "Please choose a group title.";
+        }
+
+        if (newChoreList.GetComponent<NewChoreList>().getList().Count == 0)
+        {
+            warningText = "Cannot create group with 0 chores.";
+        }
+
+        if (warningText != "")
+        {
+            Warning.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = warningText;
+            Warning.SetActive(true);
+        }
+        else
+        {
+            uploadGroup();
+            newChoreList.GetComponent<NewChoreList>().resetData();
+            SceneManager.LoadScene("Code Entry");
+        }
+    }
+
+    private void uploadGroup()
+    {
         string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         var stringChars = new char[8];
         var random = new System.Random();
@@ -80,9 +106,9 @@ public class CreateGroup : MonoBehaviour
 
         DocumentReference newGroupRef = db.Document($"Groups/{finalCode}");
         Dictionary<string, object> newGroupData = new Dictionary<string, object>
-        {
-            { "Group Title", groupTitle.text }
-        };
+            {
+                { "Group Title", groupTitle.text }
+            };
 
         newGroupRef.SetAsync(newGroupData).ContinueWithOnMainThread(task => {
             Debug.Log("Group Successfully Added");
@@ -92,38 +118,16 @@ public class CreateGroup : MonoBehaviour
         {
             DocumentReference newChoreRef = db.Document($"Groups/{finalCode}/Chores/{currChore.Title}");
             Dictionary<string, object> newChoreData = new Dictionary<string, object>
-            {
-                { "Icon ID", currChore.Title },
-                { "Chore Description", "Test chore desc" }
-            };
+                {
+                    { "Icon ID", currChore.Icon.name },
+                    { "Chore Description", currChore.Description }
+                };
             newChoreRef.SetAsync(newChoreData).ContinueWithOnMainThread(task => {
                 Debug.Log("Chore Successfully Added");
             });
         }
 
         Debug.Log(finalCode);
-
-        //string warningText = "";
-
-        //if (groupTitle.text == "")
-        //{
-        //    warningText = "Please choose a group title.";
-        //}
-
-        //if (newChoreList.GetComponent<NewChoreList>().getList().Count == 0)
-        //{
-        //    warningText = "Cannot create group with 0 chores.";
-        //}
-
-        //if (warningText != "")
-        //{
-        //    Warning.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = warningText;
-        //    Warning.SetActive(true);
-        //}
-        //else
-        //{
-
-        //}
     }
 
     public void closeWarning()
@@ -134,6 +138,7 @@ public class CreateGroup : MonoBehaviour
 
     public void toCodeEntry()
     {
+        newChoreList.GetComponent<NewChoreList>().resetData();
         SceneManager.LoadScene("Code Entry");
     }
 }

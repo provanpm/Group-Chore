@@ -13,38 +13,51 @@ public class CreateChore : MonoBehaviour
     public GameObject iconParent;
     public GameObject iconScroll;
     public TMP_InputField choreTitle;
-    public GameObject previewIcon;
-    public TMP_Text previewTitle;
+    public TMP_InputField choreDescription;
+    private Sprite choreIcon { get; set; }
     public GameObject Warning;
+    private GameObject selectedIcon;
 
     void Start()
     {
         if (newChoreList.GetComponent<NewChoreList>().getChore().Title != "")
         {
-            previewTitle.text = newChoreList.GetComponent<NewChoreList>().getChore().Title;
             choreTitle.text = newChoreList.GetComponent<NewChoreList>().getChore().Title;
-            previewIcon.GetComponent<Image>().sprite = newChoreList.GetComponent<NewChoreList>().getChore().Icon;
+            choreDescription.text = newChoreList.GetComponent<NewChoreList>().getChore().Description;
+            choreIcon = newChoreList.GetComponent<NewChoreList>().getChore().Icon;
         }
 
         foreach (Sprite currSprite in Icons)
         {
             GameObject newIcon = GameObject.Instantiate(iconTemplate) as GameObject;
-            newIcon.GetComponent<Image>().sprite = currSprite;
+            newIcon.transform.GetChild(1).GetComponent<Image>().sprite = currSprite;
             newIcon.transform.SetParent(iconParent.transform);
             newIcon.transform.localScale = new Vector3(1, 1, 1);
             newIcon.SetActive(true);
+
+            if (choreIcon?.name == currSprite.name)
+            {
+                choreIcon = newIcon.transform.GetChild(1).GetComponent<Image>().sprite;
+                newIcon.transform.GetChild(0).GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+                newIcon.transform.GetChild(1).GetComponent<Image>().color = new Color32(65, 78, 144, 255);
+                selectedIcon = newIcon;
+            }
         }
         iconScroll.GetComponent<Scrollbar>().value = 1;
     }
 
-    public void updatePreviewIcon(GameObject currIcon)
+    public void updateChoreIcon(GameObject currIcon)
     {
-        previewIcon.GetComponent<Image>().sprite = currIcon.GetComponent<Image>().sprite;
-    }
+        if (selectedIcon != null)
+        {
+            selectedIcon.transform.GetChild(0).GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+            selectedIcon.transform.GetChild(1).GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+        }
 
-    public void updatePreviewTitle()
-    {
-        previewTitle.text = choreTitle.text;
+        choreIcon = currIcon.transform.GetChild(1).GetComponent<Image>().sprite;
+        currIcon.transform.GetChild(0).GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+        currIcon.transform.GetChild(1).GetComponent<Image>().color = new Color32(65, 78, 144, 255);
+        selectedIcon = currIcon;
     }
 
     public void cancelAddChore()
@@ -58,13 +71,13 @@ public class CreateChore : MonoBehaviour
 
         for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
         {
-            if (newChoreList.GetComponent<NewChoreList>().getList()[i].Title == previewTitle.text && previewTitle.text != newChoreList.GetComponent<NewChoreList>().getChore().Title)
+            if (newChoreList.GetComponent<NewChoreList>().getList()[i].Title == choreTitle.text && choreTitle.text != newChoreList.GetComponent<NewChoreList>().getChore().Title)
             {
                 warningText = "Duplicate chore title detected, please choose new title.";
             }
         }
 
-        if (previewTitle.text == "" || previewIcon.GetComponent<Image>().sprite.name == "EMPTY")
+        if (choreTitle.text == "" || choreDescription.text == "" || choreIcon == null)
         {
             warningText = "Please enter required fields.";
         }
@@ -80,15 +93,15 @@ public class CreateChore : MonoBehaviour
             {
                 for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
                 {
-                    if (newChoreList.GetComponent<NewChoreList>().getList()[i].Equals(newChoreList.GetComponent<NewChoreList>().getChore()))
+                    if (newChoreList.GetComponent<NewChoreList>().getList()[i].Title == newChoreList.GetComponent<NewChoreList>().getChore().Title)
                     {
-                        newChoreList.GetComponent<NewChoreList>().getList()[i] = new Chore(previewTitle.text, previewIcon.GetComponent<Image>().sprite);
+                        newChoreList.GetComponent<NewChoreList>().getList()[i] = new Chore(choreTitle.text, choreIcon, choreDescription.text);
                     }
                 }
             }
             else
             {
-                newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(previewTitle.text, previewIcon.GetComponent<Image>().sprite));
+                newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(choreTitle.text, choreIcon, choreDescription.text));
             }
             SceneManager.LoadScene("Group Creation");
         }
