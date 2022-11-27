@@ -97,17 +97,9 @@ public class CreateGroup : MonoBehaviour
 
         DocumentReference newGroupRef = db.Document($"Groups/{finalCode}");
 
-        Dictionary<string, object> choreNameList = new Dictionary<string, object>();
-
-        for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
-        {
-            choreNameList.Add(i.ToString(), newChoreList.GetComponent<NewChoreList>().getList()[i].Title);
-        }
-
         Dictionary<string, object> newGroupData = new Dictionary<string, object>
         {
-            { "Group Title", groupTitle.text },
-            { "Chore Names", choreNameList}
+            { "Group Title", groupTitle.text }
         };
 
         newGroupRef.SetAsync(newGroupData).ContinueWithOnMainThread(task => {

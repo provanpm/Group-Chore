@@ -6,6 +6,7 @@ public class FoundChoreList : MonoBehaviour
 {
     static private List<Chore> newChoreList = new List<Chore>();
     static private string groupTitle = "";
+    static private string groupCode = "";
 
     public void setTitle(string newTitle)
     {
@@ -25,5 +26,15 @@ public class FoundChoreList : MonoBehaviour
     public List<Chore> getList()
     {
         return newChoreList;
+    }
+
+    public void setCode(string newCode)
+    {
+        groupCode = newCode;
+    }
+
+    public string getCode()
+    {
+        return groupCode;
     }
 }

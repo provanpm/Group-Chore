@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -10,23 +11,24 @@ using Firebase.Extensions;
 
 public class JoinedGroup : MonoBehaviour
 {
+    public List<Sprite> Icons;
+    public GameObject choreTemplate;
+    public GameObject choreListParent;
+    public GameObject foundChoreList;
+
     FirebaseFirestore db;
-    Dictionary<string, object> groupData = new Dictionary<string, object>();
-    Dictionary<string, object> choreNames = new Dictionary<string, object>();
 
     void Start()
     {
         db = FirebaseFirestore.DefaultInstance;
 
-        DocumentReference docRef = db.Collection("Groups").Document("76JFIQQD");
+        DocumentReference docRef = db.Document($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}");
 
         docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             DocumentSnapshot snapshot = task.Result;
             if (snapshot.Exists)
             {
-                groupData = snapshot.ToDictionary();
-                choreNames = groupData["Chore Names"] as Dictionary<string, object>;
                 loadChoreData();
             }
             else
@@ -34,16 +36,32 @@ public class JoinedGroup : MonoBehaviour
                 Debug.Log(String.Format("Document {0} does not exist!", snapshot.Id));
             }
         });
-        
     }
 
     private void loadChoreData()
     {
-        string groupTitle = groupData["Group Title"] as string;
-
-        foreach (KeyValuePair<string, object> data in choreNames)
+        Query choreListQuery = db.Collection($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores");
+        choreListQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
-            Debug.Log(String.Format("{0}: {1}", data.Key, data.Value));
-        }
+            QuerySnapshot choreListQuerySnapshot = task.Result;
+            foreach (DocumentSnapshot documentSnapshot in choreListQuerySnapshot.Documents)
+            {
+                Debug.Log(String.Format("Document data for {0} document:", documentSnapshot.Id));
+                Dictionary<string, object> chores = documentSnapshot.ToDictionary();
+
+                GameObject newChore = GameObject.Instantiate(choreTemplate) as GameObject;
+                newChore.transform.GetChild(0).GetComponent<Image>().sprite = Icons.Where(icon => icon.name == chores["IconID"].ToString()).First();
+                newChore.transform.GetChild(1).GetComponent<TMP_Text>().text = documentSnapshot.Id;
+                newChore.transform.GetChild(2).GetComponent<TMP_Text>().text = chores["Description"].ToString();
+                newChore.transform.SetParent(choreListParent.transform);
+                newChore.transform.localScale = new Vector3(1, 1, 1);
+                newChore.SetActive(true);
+            }
+        });
+    }
+
+    public void toCodeEntry()
+    {
+        SceneManager.LoadScene("Code Entry");
     }
 }

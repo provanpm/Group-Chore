@@ -11,6 +11,7 @@ public class CodeEntry : MonoBehaviour
 {
     public TMP_InputField codeInput;
     public TMP_Text feedbackText;
+    public GameObject foundChoreList;
 
     private bool pauseInputListener = false;
 
@@ -60,6 +61,8 @@ public class CodeEntry : MonoBehaviour
                 {
                     feedbackText.text = "Group found!";
                     Dictionary<string, object> codes = snapshot.ToDictionary();
+                    foundChoreList.GetComponent<FoundChoreList>().setCode(codeInput.text.Remove(4, 1));
+                    SceneManager.LoadScene("Joined Group");
                 }
                 else
                 {
