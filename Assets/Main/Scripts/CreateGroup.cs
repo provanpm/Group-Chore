@@ -91,6 +91,42 @@ public class CreateGroup : MonoBehaviour
 
     private void uploadGroup()
     {
+        db = FirebaseFirestore.DefaultInstance;
+
+        string finalCode = generateCode();
+
+        DocumentReference newGroupRef = db.Document($"Groups/{finalCode}");
+
+        Dictionary<string, object> choreNameList = new Dictionary<string, object>();
+
+        for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
+        {
+            choreNameList.Add(i.ToString(), newChoreList.GetComponent<NewChoreList>().getList()[i].Title);
+        }
+
+        Dictionary<string, object> newGroupData = new Dictionary<string, object>
+        {
+            { "Group Title", groupTitle.text },
+            { "Chore Names", choreNameList}
+        };
+
+        newGroupRef.SetAsync(newGroupData).ContinueWithOnMainThread(task => {
+            Debug.Log("Group Successfully Added");
+        });
+
+        foreach (Chore currChore in newChoreList.GetComponent<NewChoreList>().getList())
+        {
+            DocumentReference newChoreRef = db.Document($"Groups/{finalCode}/Chores/{currChore.Title}");
+            newChoreRef.SetAsync(currChore).ContinueWithOnMainThread(task => {
+                Debug.Log("Chore Successfully Added");
+            });
+        }
+
+        Debug.Log(finalCode);
+    }
+
+    private string generateCode()
+    {
         string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         var stringChars = new char[8];
         var random = new System.Random();
@@ -100,34 +136,7 @@ public class CreateGroup : MonoBehaviour
             stringChars[i] = chars[random.Next(chars.Length)];
         }
 
-        string finalCode = new String(stringChars);
-
-        db = FirebaseFirestore.DefaultInstance;
-
-        DocumentReference newGroupRef = db.Document($"Groups/{finalCode}");
-        Dictionary<string, object> newGroupData = new Dictionary<string, object>
-            {
-                { "Group Title", groupTitle.text }
-            };
-
-        newGroupRef.SetAsync(newGroupData).ContinueWithOnMainThread(task => {
-            Debug.Log("Group Successfully Added");
-        });
-
-        foreach (Chore currChore in newChoreList.GetComponent<NewChoreList>().getList())
-        {
-            DocumentReference newChoreRef = db.Document($"Groups/{finalCode}/Chores/{currChore.Title}");
-            Dictionary<string, object> newChoreData = new Dictionary<string, object>
-                {
-                    { "Icon ID", currChore.Icon.name },
-                    { "Chore Description", currChore.Description }
-                };
-            newChoreRef.SetAsync(newChoreData).ContinueWithOnMainThread(task => {
-                Debug.Log("Chore Successfully Added");
-            });
-        }
-
-        Debug.Log(finalCode);
+        return new String(stringChars);
     }
 
     public void closeWarning()
