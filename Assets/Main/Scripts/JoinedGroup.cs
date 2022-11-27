@@ -11,6 +11,7 @@ using Firebase.Extensions;
 
 public class JoinedGroup : MonoBehaviour
 {
+    public TMP_Text groupTitle;
     public List<Sprite> Icons;
     public GameObject choreTemplate;
     public GameObject choreListParent;
@@ -29,6 +30,8 @@ public class JoinedGroup : MonoBehaviour
             DocumentSnapshot snapshot = task.Result;
             if (snapshot.Exists)
             {
+                Dictionary<string, object> group = snapshot.ToDictionary();
+                groupTitle.text = group["Group Title"].ToString();
                 loadChoreData();
             }
             else

@@ -716,7 +716,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e80315abf8a76e8469c66547472d32f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groupTitle: {fileID: 1723012911}
   Icons:
   - {fileID: 21300000, guid: 3a70bc77a75b3f7439de500d45556a4e, type: 3}
   - {fileID: 21300000, guid: b40687612ab9f60419d939da0e924e62, type: 3}
@@ -1825,7 +1824,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Group Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
