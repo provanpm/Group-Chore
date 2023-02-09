@@ -43,13 +43,14 @@ public class JoinedGroup : MonoBehaviour
 
     private void loadChoreData()
     {
+        QuerySnapshot choreListQuerySnapshot;
+
         Query choreListQuery = db.Collection($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores");
         choreListQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
-            QuerySnapshot choreListQuerySnapshot = task.Result;
+            choreListQuerySnapshot = task.Result;
             foreach (DocumentSnapshot documentSnapshot in choreListQuerySnapshot.Documents)
             {
-                Debug.Log(String.Format("Document data for {0} document:", documentSnapshot.Id));
                 Dictionary<string, object> chores = documentSnapshot.ToDictionary();
 
                 GameObject newChore = GameObject.Instantiate(choreTemplate) as GameObject;
@@ -59,8 +60,55 @@ public class JoinedGroup : MonoBehaviour
                 newChore.transform.SetParent(choreListParent.transform);
                 newChore.transform.localScale = new Vector3(1, 1, 1);
                 newChore.SetActive(true);
+
+
+                Query choreDetailListQuery = db.Collection($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores/{documentSnapshot.Id}/Details");
+                choreDetailListQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+                {
+                    QuerySnapshot choreDetailListQuerySnapshot = task.Result;
+                    foreach (DocumentSnapshot documentSnapshot in choreDetailListQuerySnapshot.Documents)
+                    {
+                        Dictionary<string, object> details = documentSnapshot.ToDictionary();
+                        newChore.transform.GetChild(3).GetComponent<TMP_Text>().text = "Times Done: " + choreDetailListQuerySnapshot.Documents.Count().ToString();
+                        newChore.transform.GetChild(4).GetComponent<TMP_Text>().text = details["Date Done"].ToString();
+                        newChore.transform.GetChild(5).GetComponent<TMP_Text>().text = details["Done By"].ToString();
+                        //Debug.Log(choreListParent.transform.GetChild(i).GetChild(3).name);
+                        //choreListParent.transform.GetChild(i).GetChild(3).GetComponent<TMP_Text>().text = "AAAAAAAA";
+                        //choreListParent.transform.GetChild(i).GetChild(4).GetComponent<TMP_Text>().text = details["Date Done"].ToString();
+                        //choreListParent.transform.GetChild(i).GetChild(5).GetComponent<TMP_Text>().text = details["Done By"].ToString();
+                        Debug.Log(details.ElementAt(0));
+                        Debug.Log(details.ElementAt(1));
+                        Debug.Log(details.ElementAt(2));
+                    }
+                });
+
             }
+           // loadChoreDetails();
         });
+    }
+
+    private void loadChoreDetails()
+    {
+        for (int i = 1; i <= choreListParent.transform.childCount; i++)
+        {
+            string choreName = choreListParent.transform.GetChild(i).GetChild(1).GetComponent<TMP_Text>().text;
+            Query choreDetailListQuery = db.Collection($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores/{choreName}/Details");
+            choreDetailListQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            {
+                QuerySnapshot choreDetailListQuerySnapshot = task.Result;
+                foreach (DocumentSnapshot documentSnapshot in choreDetailListQuerySnapshot.Documents)
+                {
+                    Dictionary<string, object> details = documentSnapshot.ToDictionary();
+                    //Debug.Log(choreListParent.transform.GetChild(i).GetChild(3).name);
+                    //choreListParent.transform.GetChild(i).GetChild(3).GetComponent<TMP_Text>().text = "AAAAAAAA";
+                    //choreListParent.transform.GetChild(i).GetChild(4).GetComponent<TMP_Text>().text = details["Date Done"].ToString();
+                    //choreListParent.transform.GetChild(i).GetChild(5).GetComponent<TMP_Text>().text = details["Done By"].ToString();
+                    Debug.Log(details.ElementAt(0));
+                    Debug.Log(details.ElementAt(1));
+                    Debug.Log(details.ElementAt(2));
+                }
+            });
+        }
     }
 
     public void toCodeEntry()
