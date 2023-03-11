@@ -6,16 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Main/Scenes/Chore Creation.unity
+    path: Assets/Main/Scenes/PreJoin/Chore Creation.unity
     guid: 8c1fa4d744e8f1e4798eaede42941003
   - enabled: 1
-    path: Assets/Main/Scenes/Code Entry.unity
+    path: Assets/Main/Scenes/PreJoin/Code Entry.unity
     guid: 3fc8acdd13e6c734bafef6554d6fdbcd
   - enabled: 1
-    path: Assets/Main/Scenes/Group Creation.unity
+    path: Assets/Main/Scenes/PreJoin/Group Creation.unity
     guid: c50dd313ccddb4e41bebe5bb20768e74
   - enabled: 1
-    path: Assets/Main/Scenes/Joined Group.unity
+    path: Assets/Main/Scenes/PostJoin/Joined Group.unity
     guid: 5cbac20e42c331a48a3d3131f7908073
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 3217864ae933fcc4e932ab3a9132bdd0, type: 2}
