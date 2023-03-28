@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Linq;
 
 public class ChoreNav: MonoBehaviour
 {
     private static string CurrentScene = "";
-    private static string PreviousScene = "";
+    private static List<string> PreviousScene = new List<string>();
 /*
     public ChoreNav()
     {
@@ -21,7 +23,8 @@ public class ChoreNav: MonoBehaviour
 
 */
     public void GoToPreviousScene () {
-        SceneManager.LoadScene(PreviousScene);
+        SceneManager.LoadScene(PreviousScene.Last());
+        PreviousScene.RemoveAt(PreviousScene.Count - 1);
     }
 
     public void GoToCurrentScene () {
@@ -33,7 +36,7 @@ public class ChoreNav: MonoBehaviour
     }
 
     public void SetPreviousScene (string previousScene) {
-        PreviousScene = previousScene;
+        PreviousScene.Add(previousScene);
     }
 
 }

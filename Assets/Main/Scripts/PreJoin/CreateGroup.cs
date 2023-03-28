@@ -60,7 +60,10 @@ public class CreateGroup : MonoBehaviour
     {
         newChoreList.GetComponent<NewChoreList>().setTitle(groupTitle.text);
         newChoreList.GetComponent<NewChoreList>().setChore(new Chore());
-        SceneManager.LoadScene("Chore Creation");
+        //SceneManager.LoadScene("Chore Creation");
+        choreNav.GetComponent<ChoreNav>().SetCurrentScene("Chore Creation");
+        choreNav.GetComponent<ChoreNav>().SetPreviousScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
     }
 
     public void confirmCreateGroup()

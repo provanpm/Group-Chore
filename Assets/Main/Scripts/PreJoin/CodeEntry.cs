@@ -63,7 +63,9 @@ public class CodeEntry : MonoBehaviour
                     feedbackText.text = "Group found!";
                     //Dictionary<string, object> codes = snapshot.ToDictionary();
                     foundChoreList.GetComponent<FoundChoreList>().setCode(codeInput.text.Remove(4, 1));
-                    SceneManager.LoadScene("Joined Group");
+                    choreNav.GetComponent<ChoreNav>().SetCurrentScene("Joined Group");
+                    choreNav.GetComponent<ChoreNav>().SetPreviousScene("Code Entry");
+                    choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
                 }
                 else
                 {
