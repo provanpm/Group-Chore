@@ -12,6 +12,7 @@ public class CodeEntry : MonoBehaviour
     public TMP_InputField codeInput;
     public TMP_Text feedbackText;
     public GameObject foundChoreList;
+    public GameObject choreNav;
 
     private bool pauseInputListener = false;
 
@@ -78,6 +79,9 @@ public class CodeEntry : MonoBehaviour
 
     public void toCreateGroup()
     {
-        SceneManager.LoadScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().SetCurrentScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().SetPreviousScene("Code Entry");
+        choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
+        //SceneManager.LoadScene("Group Creation");
     }
 }

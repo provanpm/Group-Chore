@@ -17,6 +17,7 @@ public class CreateChore : MonoBehaviour
     private Sprite choreIcon { get; set; }
     public GameObject Warning;
     private GameObject selectedIcon;
+    public GameObject choreNav;
 
     void Start()
     {
@@ -62,7 +63,7 @@ public class CreateChore : MonoBehaviour
 
     public void cancelAddChore()
     {
-        SceneManager.LoadScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().GoToPreviousScene();
     }
 
     public void confirmAddChore()
@@ -103,7 +104,10 @@ public class CreateChore : MonoBehaviour
             {
                 newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(choreTitle.text, choreIcon, choreDescription.text));
             }
-            SceneManager.LoadScene("Group Creation");
+            
+            choreNav.GetComponent<ChoreNav>().GoToPreviousScene();
+            // ChoreNav.GoToPreviousScene();
+            //SceneManager.LoadScene("Group Creation");
         }
     }
 

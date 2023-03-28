@@ -1871,6 +1871,7 @@ GameObject:
   - component: {fileID: 820502586}
   - component: {fileID: 820502590}
   - component: {fileID: 820502591}
+  - component: {fileID: 820502592}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2037,6 +2038,19 @@ MonoBehaviour:
   choreTitle: {fileID: 1510527749}
   choreDescription: {fileID: 1517332031}
   Warning: {fileID: 528467302}
+  choreNav: {fileID: 820502585}
+--- !u!114 &820502592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820502585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1965d2c8e63fb0349a852a870ce43838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &980434274
 GameObject:
   m_ObjectHideFlags: 0
