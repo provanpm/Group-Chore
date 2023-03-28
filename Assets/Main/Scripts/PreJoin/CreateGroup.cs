@@ -16,6 +16,7 @@ public class CreateGroup : MonoBehaviour
     public GameObject choreListParent;
     public GameObject confirmButton;
     public GameObject Warning;
+    public GameObject choreNav;
 
     FirebaseFirestore db;
 
@@ -140,6 +141,6 @@ public class CreateGroup : MonoBehaviour
     public void toCodeEntry()
     {
         newChoreList.GetComponent<NewChoreList>().resetData();
-        SceneManager.LoadScene("Code Entry");
+        choreNav.GetComponent<ChoreNav>().GoToPreviousScene();
     }
 }
