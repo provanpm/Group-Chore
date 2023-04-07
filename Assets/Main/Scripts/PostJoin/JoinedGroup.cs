@@ -59,20 +59,26 @@ public class JoinedGroup : MonoBehaviour
                 newChore.transform.localScale = new Vector3(1, 1, 1);
                 newChore.SetActive(true);
 
-
                 Query choreDetailListQuery = db.Collection($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores/{documentSnapshot.Id}/Details");
                 choreDetailListQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
                 {
                     QuerySnapshot choreDetailListQuerySnapshot = task.Result;
-                    foreach (DocumentSnapshot documentSnapshot in choreDetailListQuerySnapshot.Documents)
+
+                    if (choreDetailListQuerySnapshot.Documents.Count() > 0)
                     {
+                        DocumentSnapshot documentSnapshot = choreDetailListQuerySnapshot.Documents.Last();
                         Dictionary<string, object> details = documentSnapshot.ToDictionary();
                         newChore.transform.GetChild(3).GetComponent<TMP_Text>().text = "Times Done: " + choreDetailListQuerySnapshot.Documents.Count().ToString();
-                        newChore.transform.GetChild(4).GetComponent<TMP_Text>().text = "Date Done: " + details["Date Done"].ToString();
-                        newChore.transform.GetChild(5).GetComponent<TMP_Text>().text = "Last Done By: " + details["Done By"].ToString();
+                        newChore.transform.GetChild(4).GetComponent<TMP_Text>().text = "Last Done: " + details["Date"].ToString();
+                        newChore.transform.GetChild(5).GetComponent<TMP_Text>().text = "By: " + details["Done By"].ToString();
+                    }
+                    else
+                    {
+                        newChore.transform.GetChild(3).GetComponent<TMP_Text>().text = "Times Done: 0";
+                        newChore.transform.GetChild(4).GetComponent<TMP_Text>().text = "Last Done: N/A";
+                        newChore.transform.GetChild(5).GetComponent<TMP_Text>().text = "By: N/A";
                     }
                 });
-
             }
         });
     }
