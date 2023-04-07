@@ -63,7 +63,7 @@ public class CodeEntry : MonoBehaviour
                     foundChoreList.GetComponent<FoundChoreList>().setCode(codeInput.text.Remove(4, 1));
                     if (PlayerPrefs.GetString("DisplayName") == "")
                     {
-                        SceneManager.LoadScene("Verify User");
+                        SceneManager.LoadScene("User Verification");
                     }
                     else
                     {

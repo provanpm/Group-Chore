@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Firebase.Firestore;
 using Firebase.Extensions;
@@ -19,6 +20,8 @@ public class VerifyUser : MonoBehaviour
     public TMP_InputField existingEmail;
     public TMP_InputField emailCode;
     public TMP_Text warningText;
+    public Button nameAndEmailConfirmButton;
+    public Button emailConfirmButton;
 
     private int emailPIN;
     private Email sendMessage;
@@ -84,6 +87,7 @@ public class VerifyUser : MonoBehaviour
     {
         if (existingEmail.text != "")
         {
+            emailConfirmButton.interactable = false;
             colRef.Document(existingEmail.text).GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
                 DocumentSnapshot snapshot = task.Result;
@@ -98,6 +102,7 @@ public class VerifyUser : MonoBehaviour
                 {
                     warningText.text = "No account associated with this email was found.";
                     warning.SetActive(true);
+                    emailConfirmButton.interactable = true;
                 }
             }); 
         }
@@ -111,6 +116,7 @@ public class VerifyUser : MonoBehaviour
     {
         if (newEmail.text != "" && newDisplayName.text != "")
         {
+            nameAndEmailConfirmButton.interactable = false;
             colRef.Document(newEmail.text).GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
                 DocumentSnapshot snapshot = task.Result;
@@ -118,6 +124,7 @@ public class VerifyUser : MonoBehaviour
                 {
                     warningText.text = "An account with this email already exists.";
                     warning.SetActive(true);
+                    nameAndEmailConfirmButton.interactable = true;
                 }
                 else
                 {
@@ -147,10 +154,13 @@ public class VerifyUser : MonoBehaviour
         {
             if (loginType == "New")
             {
-                string DisplayName = newDisplayName.text;
+                Dictionary<string, object> newUser = new Dictionary<string, object>
+                {
+                    { "Display Name", newDisplayName.text }
+                };
 
                 DocumentReference newUserRef = db.Document($"Users/{newEmail.text}");
-                newUserRef.SetAsync(DisplayName).ContinueWithOnMainThread(task => {
+                newUserRef.SetAsync(newUser).ContinueWithOnMainThread(task => {
                     Debug.Log("User Successfully Added");
                     PlayerPrefs.SetString("DisplayName", newDisplayName.text);
                     PlayerPrefs.SetString("Email", newEmail.text);
@@ -175,7 +185,14 @@ public class VerifyUser : MonoBehaviour
     {
         emailPIN = UnityEngine.Random.Range(1000, 10000);
         string result = sendMessage.SendEmail(Email, "GroupChore Verification", "Your account confirmation code is: " + emailPIN.ToString());
+        emailConfirmButton.interactable = true;
+        nameAndEmailConfirmButton.interactable = true;
         return result;
+    }
+
+    public void toCodeEntry()
+    {
+        SceneManager.LoadScene("Code Entry");
     }
 
     public void closeWarning()

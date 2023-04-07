@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Main/Scenes/PostJoin/Joined Group.unity
     guid: 5cbac20e42c331a48a3d3131f7908073
+  - enabled: 1
+    path: Assets/Main/Scenes/PreJoin/User Verification.unity
+    guid: 62c5d4ab0f115374299a3e2f0c5f9866
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 3217864ae933fcc4e932ab3a9132bdd0, type: 2}

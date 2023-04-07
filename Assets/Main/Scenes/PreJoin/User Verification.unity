@@ -2872,6 +2872,8 @@ MonoBehaviour:
   existingEmail: {fileID: 578935732}
   emailCode: {fileID: 569859747}
   warningText: {fileID: 1327670447}
+  nameAndEmailConfirmButton: {fileID: 339781758}
+  emailConfirmButton: {fileID: 830287930}
 --- !u!1 &807897828
 GameObject:
   m_ObjectHideFlags: 0
@@ -4149,7 +4151,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1032770274}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 782500918}
+        m_TargetAssemblyTypeName: VerifyUser, Assembly-CSharp
+        m_MethodName: toCodeEntry
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1032770274
 MonoBehaviour:
   m_ObjectHideFlags: 0

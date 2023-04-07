@@ -108,7 +108,7 @@ public class CreateGroup : MonoBehaviour
         foundChoreList.GetComponent<FoundChoreList>().setCode(finalCode);
         if (PlayerPrefs.GetString("DisplayName") == "")
         {
-            SceneManager.LoadScene("Verify User");
+            SceneManager.LoadScene("User Verification");
         }
         else {
             SceneManager.LoadScene("Joined Group");
