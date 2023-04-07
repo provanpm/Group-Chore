@@ -12,9 +12,9 @@ public class CreateGroup : MonoBehaviour
 {
     public TMP_InputField groupTitle;
     public GameObject newChoreList;
+    public GameObject foundChoreList;
     public GameObject choreTemplate;
     public GameObject choreListParent;
-    public GameObject foundChoreList;
     public TMP_Text showCodeText;
 
     public GameObject createGroupPanel;
