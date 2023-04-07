@@ -14,9 +14,16 @@ public class CreateGroup : MonoBehaviour
     public GameObject newChoreList;
     public GameObject choreTemplate;
     public GameObject choreListParent;
-    public GameObject confirmButton;
+    public GameObject foundChoreList;
+    public TMP_Text showCodeText;
+
+    public GameObject createGroupPanel;
+    public GameObject showCodePanel;
+
     public GameObject Warning;
     public GameObject choreNav;
+
+    private string finalCode = "";
 
     FirebaseFirestore db;
 
@@ -89,7 +96,26 @@ public class CreateGroup : MonoBehaviour
         {
             uploadGroup();
             newChoreList.GetComponent<NewChoreList>().resetData();
-            SceneManager.LoadScene("Code Entry");
+            showCode();
+        }
+    }
+
+    public void showCode()
+    {
+        showCodeText.text = finalCode;
+        createGroupPanel.SetActive(false);
+        showCodePanel.SetActive(true);
+    }
+
+    public void confirmShowCode()
+    {
+        foundChoreList.GetComponent<FoundChoreList>().setCode(finalCode);
+        if (PlayerPrefs.GetString("DisplayName") == "")
+        {
+            SceneManager.LoadScene("User Verification");
+        }
+        else {
+            SceneManager.LoadScene("Joined Group");
         }
     }
 
@@ -97,7 +123,7 @@ public class CreateGroup : MonoBehaviour
     {
         db = FirebaseFirestore.DefaultInstance;
 
-        string finalCode = generateCode();
+        finalCode = generateCode();
 
         DocumentReference newGroupRef = db.Document($"Groups/{finalCode}");
 
