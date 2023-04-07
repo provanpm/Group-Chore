@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Firebase.Firestore;
+using Firebase.Extensions;
 
 public class CreateChore : MonoBehaviour
 {
@@ -17,6 +19,10 @@ public class CreateChore : MonoBehaviour
     private Sprite choreIcon { get; set; }
     public GameObject Warning;
     private GameObject selectedIcon;
+    public GameObject choreNav;
+    public GameObject foundChoreList;
+    FirebaseFirestore db;
+    
 
     void Start()
     {
@@ -46,6 +52,17 @@ public class CreateChore : MonoBehaviour
         iconScroll.GetComponent<Scrollbar>().value = 1;
     }
 
+    public void addChoreToFirebase()
+    {
+        db = FirebaseFirestore.DefaultInstance;
+        string groupCode = foundChoreList.GetComponent<FoundChoreList>().getCode();
+        Chore chore = new Chore(choreTitle.text, choreIcon, choreDescription.text);
+        DocumentReference newChoreRef = db.Document($"Groups/{groupCode}/Chores/{choreTitle.text}");
+            newChoreRef.SetAsync(chore).ContinueWithOnMainThread(task => {
+                Debug.Log("Chore Successfully Added");
+            });
+    }
+
     public void updateChoreIcon(GameObject currIcon)
     {
         if (selectedIcon != null)
@@ -62,11 +79,16 @@ public class CreateChore : MonoBehaviour
 
     public void cancelAddChore()
     {
-        SceneManager.LoadScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().GoToPreviousScene();
     }
 
     public void confirmAddChore()
     {
+        if (foundChoreList.GetComponent<FoundChoreList>().getCode() != "") {
+            newChoreList.GetComponent<NewChoreList>().setList(foundChoreList.GetComponent<FoundChoreList>().getList());
+        }
+
+
         string warningText = "";
 
         for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
@@ -102,8 +124,14 @@ public class CreateChore : MonoBehaviour
             else
             {
                 newChoreList.GetComponent<NewChoreList>().addNewChore(new Chore(choreTitle.text, choreIcon, choreDescription.text));
+                if (foundChoreList.GetComponent<FoundChoreList>().getCode() != "") {
+                    addChoreToFirebase();
+                }
             }
-            SceneManager.LoadScene("Group Creation");
+            
+            choreNav.GetComponent<ChoreNav>().GoToPreviousScene();
+            // ChoreNav.GoToPreviousScene();
+            //SceneManager.LoadScene("Group Creation");
         }
     }
 

@@ -16,6 +16,8 @@ public class JoinedGroup : MonoBehaviour
     public GameObject choreTemplate;
     public GameObject choreListParent;
     public GameObject foundChoreList;
+    public GameObject createChore;
+    public GameObject choreNav;
 
     FirebaseFirestore db;
 
@@ -80,5 +82,16 @@ public class JoinedGroup : MonoBehaviour
     public void toCodeEntry()
     {
         SceneManager.LoadScene("Code Entry");
+    }
+
+    public void toNewChore()
+    {
+        choreNav.GetComponent<ChoreNav>().SetCurrentScene("Chore Creation");
+        choreNav.GetComponent<ChoreNav>().SetPreviousScene("Joined Group");
+        choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
+        // ChoreNav.SetCurrentScene("Chore Creation");
+        // ChoreNav.SetPreviousScene("Joined Group");
+        // ChoreNav.GoToCurrentScene();
+        //SceneManager.LoadScene("Chore Creation");
     }
 }

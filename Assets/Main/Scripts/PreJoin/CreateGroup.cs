@@ -21,6 +21,7 @@ public class CreateGroup : MonoBehaviour
     public GameObject showCodePanel;
 
     public GameObject Warning;
+    public GameObject choreNav;
 
     private string finalCode = "";
 
@@ -66,7 +67,10 @@ public class CreateGroup : MonoBehaviour
     {
         newChoreList.GetComponent<NewChoreList>().setTitle(groupTitle.text);
         newChoreList.GetComponent<NewChoreList>().setChore(new Chore());
-        SceneManager.LoadScene("Chore Creation");
+        //SceneManager.LoadScene("Chore Creation");
+        choreNav.GetComponent<ChoreNav>().SetCurrentScene("Chore Creation");
+        choreNav.GetComponent<ChoreNav>().SetPreviousScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
     }
 
     public void confirmCreateGroup()
@@ -166,6 +170,6 @@ public class CreateGroup : MonoBehaviour
     public void toCodeEntry()
     {
         newChoreList.GetComponent<NewChoreList>().resetData();
-        SceneManager.LoadScene("Code Entry");
+        choreNav.GetComponent<ChoreNav>().GoToPreviousScene();
     }
 }
