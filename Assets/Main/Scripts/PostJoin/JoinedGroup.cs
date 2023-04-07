@@ -18,6 +18,7 @@ public class JoinedGroup : MonoBehaviour
     public GameObject foundChoreList;
     public GameObject createChore;
     public GameObject choreNav;
+    public GameObject singleChoreDetail;
 
     FirebaseFirestore db;
 
@@ -97,9 +98,12 @@ public class JoinedGroup : MonoBehaviour
 
     }
 
-    
+
     public void ChoreClicked(String choreName)
     {
-        Debug.Log(choreName);
+        singleChoreDetail.GetComponent<SingleChoreDetail>().setTitle(choreName);
+        choreNav.GetComponent<ChoreNav>().SetCurrentScene("Chore Detail");
+        choreNav.GetComponent<ChoreNav>().SetPreviousScene("Joined Group");
+        choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
     }
 }
