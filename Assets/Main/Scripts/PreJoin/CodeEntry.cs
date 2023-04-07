@@ -12,6 +12,7 @@ public class CodeEntry : MonoBehaviour
     public TMP_InputField codeInput;
     public TMP_Text feedbackText;
     public GameObject foundChoreList;
+    public GameObject choreNav;
 
     private bool pauseInputListener = false;
 
@@ -61,6 +62,10 @@ public class CodeEntry : MonoBehaviour
                 {
                     feedbackText.text = "Group found!";
                     foundChoreList.GetComponent<FoundChoreList>().setCode(codeInput.text.Remove(4, 1));
+                    choreNav.GetComponent<ChoreNav>().SetCurrentScene("Joined Group");
+                    choreNav.GetComponent<ChoreNav>().SetPreviousScene("Code Entry");
+                    choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
+/*
                     if (PlayerPrefs.GetString("DisplayName") == "")
                     {
                         SceneManager.LoadScene("User Verification");
@@ -69,6 +74,7 @@ public class CodeEntry : MonoBehaviour
                     {
                         SceneManager.LoadScene("Joined Group");
                     }
+*/
                 }
                 else
                 {
@@ -84,6 +90,9 @@ public class CodeEntry : MonoBehaviour
 
     public void toCreateGroup()
     {
-        SceneManager.LoadScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().SetCurrentScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().SetPreviousScene("Code Entry");
+        choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
+        //SceneManager.LoadScene("Group Creation");
     }
 }

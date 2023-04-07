@@ -78,3 +78,7 @@ Assets/Plugins/iOS/Firebase/libFirebaseCppFirestore.a
 Assets/Plugins/iOS/Firebase/libFirebaseCppFirestore.a.meta
 Assets/StreamingAssets/google-services-desktop.json
 Assets/StreamingAssets/google-services-desktop.json.meta
+Packages/manifest.json
+Packages/packages-lock.json
+ProjectSettings/GvhProjectSettings.xml
+ProjectSettings/ProjectVersion.txt

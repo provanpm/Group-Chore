@@ -1701,6 +1701,7 @@ GameObject:
   - component: {fileID: 820502587}
   - component: {fileID: 820502586}
   - component: {fileID: 820502591}
+  - component: {fileID: 820502592}
   - component: {fileID: 820502590}
   - component: {fileID: 820502592}
   m_Layer: 5
@@ -1827,6 +1828,7 @@ MonoBehaviour:
   createGroupPanel: {fileID: 2037212124}
   showCodePanel: {fileID: 1044044163}
   Warning: {fileID: 286381935}
+  choreNav: {fileID: 820502585}
 --- !u!114 &820502592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1836,7 +1838,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 820502585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d177b0a97f98a84b83646c42e519d5a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1965d2c8e63fb0349a852a870ce43838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &868652625
