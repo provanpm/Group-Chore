@@ -18,6 +18,7 @@ public class JoinedGroup : MonoBehaviour
     public GameObject foundChoreList;
     public GameObject createChore;
     public GameObject choreNav;
+    public GameObject singleChoreDetail;
 
     FirebaseFirestore db;
 
@@ -59,6 +60,7 @@ public class JoinedGroup : MonoBehaviour
                 newChore.transform.GetChild(2).GetComponent<TMP_Text>().text = chores["Description"].ToString();
                 newChore.transform.SetParent(choreListParent.transform);
                 newChore.transform.localScale = new Vector3(1, 1, 1);
+                newChore.GetComponent<Button>().onClick.AddListener(() => ChoreClicked(documentSnapshot.Id));
                 newChore.SetActive(true);
 
                 Query choreDetailListQuery = db.Collection($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores/{documentSnapshot.Id}/Details");
@@ -99,5 +101,15 @@ public class JoinedGroup : MonoBehaviour
         // ChoreNav.SetPreviousScene("Joined Group");
         // ChoreNav.GoToCurrentScene();
         //SceneManager.LoadScene("Chore Creation");
+
+    }
+
+
+    public void ChoreClicked(String choreName)
+    {
+        singleChoreDetail.GetComponent<SingleChoreDetail>().setTitle(choreName);
+        choreNav.GetComponent<ChoreNav>().SetCurrentScene("Chore Detail");
+        choreNav.GetComponent<ChoreNav>().SetPreviousScene("Joined Group");
+        choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
     }
 }
