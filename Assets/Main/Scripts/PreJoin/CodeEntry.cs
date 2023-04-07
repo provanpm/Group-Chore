@@ -60,9 +60,15 @@ public class CodeEntry : MonoBehaviour
                 if (snapshot.Exists)
                 {
                     feedbackText.text = "Group found!";
-                    //Dictionary<string, object> codes = snapshot.ToDictionary();
                     foundChoreList.GetComponent<FoundChoreList>().setCode(codeInput.text.Remove(4, 1));
-                    SceneManager.LoadScene("Joined Group");
+                    if (PlayerPrefs.GetString("DisplayName") == "")
+                    {
+                        SceneManager.LoadScene("Verify User");
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("Joined Group");
+                    }
                 }
                 else
                 {

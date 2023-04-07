@@ -2,61 +2,70 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Firebase.Firestore;
+using Firebase.Extensions;
+using UnityEngine.SceneManagement;
 
 public class VerifyUser : MonoBehaviour
 {
-    public GameObject CreateOrLogin;
-    public GameObject NameEmailEntry;
-    public GameObject EmailEntry;
-    public GameObject CodeEntry;
-    public GameObject Warning;
-    public TMP_InputField NewDisplayName;
-    public TMP_InputField NewEmail;
-    public TMP_InputField ExistingEmail;
-    public TMP_InputField EmailCode;
+    public GameObject createOrLogin;
+    public GameObject nameemailEntry;
+    public GameObject emailEntry;
+    public GameObject codeEntry;
+    public GameObject warning;
+    public TMP_InputField newDisplayName;
+    public TMP_InputField newEmail;
+    private string existingDisplayName;
+    public TMP_InputField existingEmail;
+    public TMP_InputField emailCode;
     public TMP_Text warningText;
 
     private int emailPIN;
     private Email sendMessage;
     private string loginType = "";
 
+    FirebaseFirestore db;
+    CollectionReference colRef;
+
     void Start()
     {
         sendMessage = ScriptableObject.CreateInstance("Email") as Email;
+        db = FirebaseFirestore.DefaultInstance;
+        colRef = db.Collection("Users");
     }
 
     public void toCreateOrLogin()
     {
-        CreateOrLogin.SetActive(true);
-        EmailEntry.SetActive(false);
-        NameEmailEntry.SetActive(false);
-        CodeEntry.SetActive(false);
+        createOrLogin.SetActive(true);
+        emailEntry.SetActive(false);
+        nameemailEntry.SetActive(false);
+        codeEntry.SetActive(false);
     }
 
     public void toNewUser()
     {
-        CreateOrLogin.SetActive(false);
-        EmailEntry.SetActive(false);
-        NameEmailEntry.SetActive(true);
-        CodeEntry.SetActive(false);
+        createOrLogin.SetActive(false);
+        emailEntry.SetActive(false);
+        nameemailEntry.SetActive(true);
+        codeEntry.SetActive(false);
         loginType = "New";
     }
 
     public void toNewDevice()
     {
-        CreateOrLogin.SetActive(false);
-        EmailEntry.SetActive(true);
-        NameEmailEntry.SetActive(false);
-        CodeEntry.SetActive(false);
+        createOrLogin.SetActive(false);
+        emailEntry.SetActive(true);
+        nameemailEntry.SetActive(false);
+        codeEntry.SetActive(false);
         loginType = "Existing";
     }
 
     public void toVerifyCode()
     {
-        CreateOrLogin.SetActive(false);
-        EmailEntry.SetActive(false);
-        NameEmailEntry.SetActive(false);
-        CodeEntry.SetActive(true);
+        createOrLogin.SetActive(false);
+        emailEntry.SetActive(false);
+        nameemailEntry.SetActive(false);
+        codeEntry.SetActive(true);
     }
 
     public void backFromVerifyCode()
@@ -71,72 +80,107 @@ public class VerifyUser : MonoBehaviour
         }
     }
 
-    public void VerifyExistingEmail()
+    public void verifyExistingEmail()
     {
-        if (ExistingEmail.text != "")
+        if (existingEmail.text != "")
         {
-            string result = newEmailCode(ExistingEmail.text);
-            if (result == "Success")
+            colRef.Document(existingEmail.text).GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
-                toVerifyCode();
-            }
-            else
-            {
-                warningText.text = "Invalid email.";
-                Warning.SetActive(true);
-            }
+                DocumentSnapshot snapshot = task.Result;
+                if (snapshot.Exists)
+                {
+                    Dictionary<string, object> user = snapshot.ToDictionary();
+                    existingDisplayName = user["Display Name"].ToString();
+                    string result = newEmailCode(existingEmail.text);
+                    toVerifyCode();
+                }
+                else
+                {
+                    warningText.text = "No account associated with this email was found.";
+                    warning.SetActive(true);
+                }
+            }); 
         }
         else {
             warningText.text = "Please enter email.";
-            Warning.SetActive(true);
+            warning.SetActive(true);
         }
     }
 
-    public void VerifyNewEmail()
+    public void verifyNewEmail()
     {
-        if (NewEmail.text != "" && NewDisplayName.text != "")
+        if (newEmail.text != "" && newDisplayName.text != "")
         {
-            string result = newEmailCode(NewEmail.text);
-            if (result == "Success")
+            colRef.Document(newEmail.text).GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
-                toVerifyCode();
-            }
-            else
-            {
-                warningText.text = "Invalid email.";
-                Warning.SetActive(true);
-            }
+                DocumentSnapshot snapshot = task.Result;
+                if (snapshot.Exists)
+                {
+                    warningText.text = "An account with this email already exists.";
+                    warning.SetActive(true);
+                }
+                else
+                {
+                    string result = newEmailCode(newEmail.text);
+                    if (result == "Success")
+                    {
+                        toVerifyCode();
+                    }
+                    else
+                    {
+                        warningText.text = "Invalid email.";
+                        warning.SetActive(true);
+                    }
+                }
+            });
         }
         else
         {
             warningText.text = "Please enter required fields.";
-            Warning.SetActive(true);
+            warning.SetActive(true);
         }
     }
 
-    public void VerifyCode()
+    public void verifyCode()
     {
-        if (EmailCode.text == emailPIN.ToString())
+        if (emailCode.text == emailPIN.ToString())
         {
-            UnityEngine.Debug.Log("Success!");
+            if (loginType == "New")
+            {
+                string DisplayName = newDisplayName.text;
+
+                DocumentReference newUserRef = db.Document($"Users/{newEmail.text}");
+                newUserRef.SetAsync(DisplayName).ContinueWithOnMainThread(task => {
+                    Debug.Log("User Successfully Added");
+                    PlayerPrefs.SetString("DisplayName", newDisplayName.text);
+                    PlayerPrefs.SetString("Email", newEmail.text);
+                });
+            }
+            else if (loginType == "Existing")
+            {
+                PlayerPrefs.SetString("DisplayName", existingDisplayName);
+                PlayerPrefs.SetString("Email", existingEmail.text);
+            }
+
+            SceneManager.LoadScene("Joined Group");
         }
         else
         {
             warningText.text = "Code incorrect.";
-            Warning.SetActive(true);
+            warning.SetActive(true);
         }
     }
 
     public string newEmailCode(string Email)
     {
         emailPIN = UnityEngine.Random.Range(1000, 10000);
-        string result = sendMessage.SendEmail(Email, "GroupChore Verification", "Hello The account confirmation code is: " + emailPIN.ToString());
+        string result = sendMessage.SendEmail(Email, "GroupChore Verification", "Your account confirmation code is: " + emailPIN.ToString());
         return result;
     }
 
     public void closeWarning()
     {
         warningText.text = "";
-        Warning.SetActive(false);
+        warning.SetActive(false);
     }
 }

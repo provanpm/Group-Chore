@@ -77,7 +77,7 @@ public class CreateChore : MonoBehaviour
             }
         }
 
-        if (choreTitle.text == "" || choreDescription.text == "" || choreIcon == null)
+        if (choreTitle.text == "" || choreIcon == null)
         {
             warningText = "Please enter required fields.";
         }
