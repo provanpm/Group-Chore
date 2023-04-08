@@ -47,7 +47,9 @@ public class CreateGroup : MonoBehaviour
     {
         newChoreList.GetComponent<NewChoreList>().setTitle(groupTitle.text);
         newChoreList.GetComponent<NewChoreList>().setChore(new Chore(currChore.transform.GetChild(1).GetComponent<TMP_Text>().text, currChore.transform.GetChild(0).GetComponent<Image>().sprite, currChore.transform.GetChild(2).GetComponent<TMP_Text>().text));
-        SceneManager.LoadScene("Chore Creation");
+        choreNav.GetComponent<ChoreNav>().SetCurrentScene("Chore Creation");
+        choreNav.GetComponent<ChoreNav>().SetPreviousScene("Group Creation");
+        choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
     }
 
     public void deleteChore(GameObject currChore)
@@ -67,7 +69,6 @@ public class CreateGroup : MonoBehaviour
     {
         newChoreList.GetComponent<NewChoreList>().setTitle(groupTitle.text);
         newChoreList.GetComponent<NewChoreList>().setChore(new Chore());
-        //SceneManager.LoadScene("Chore Creation");
         choreNav.GetComponent<ChoreNav>().SetCurrentScene("Chore Creation");
         choreNav.GetComponent<ChoreNav>().SetPreviousScene("Group Creation");
         choreNav.GetComponent<ChoreNav>().GoToCurrentScene();

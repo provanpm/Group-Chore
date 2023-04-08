@@ -97,13 +97,7 @@ public class JoinedGroup : MonoBehaviour
         choreNav.GetComponent<ChoreNav>().SetCurrentScene("Chore Creation");
         choreNav.GetComponent<ChoreNav>().SetPreviousScene("Joined Group");
         choreNav.GetComponent<ChoreNav>().GoToCurrentScene();
-        // ChoreNav.SetCurrentScene("Chore Creation");
-        // ChoreNav.SetPreviousScene("Joined Group");
-        // ChoreNav.GoToCurrentScene();
-        //SceneManager.LoadScene("Chore Creation");
-
     }
-
 
     public void ChoreClicked(String choreName)
     {

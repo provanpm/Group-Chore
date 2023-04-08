@@ -22,7 +22,6 @@ public class CreateChore : MonoBehaviour
     public GameObject choreNav;
     public GameObject foundChoreList;
     FirebaseFirestore db;
-    
 
     void Start()
     {
@@ -88,7 +87,6 @@ public class CreateChore : MonoBehaviour
             newChoreList.GetComponent<NewChoreList>().setList(foundChoreList.GetComponent<FoundChoreList>().getList());
         }
 
-
         string warningText = "";
 
         for (int i = 0; i < newChoreList.GetComponent<NewChoreList>().getList().Count; i++)
@@ -130,8 +128,6 @@ public class CreateChore : MonoBehaviour
             }
             
             choreNav.GetComponent<ChoreNav>().GoToPreviousScene();
-            // ChoreNav.GoToPreviousScene();
-            //SceneManager.LoadScene("Group Creation");
         }
     }
 
