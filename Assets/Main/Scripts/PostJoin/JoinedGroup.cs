@@ -73,8 +73,8 @@ public class JoinedGroup : MonoBehaviour
                         DocumentSnapshot documentSnapshot = choreDetailListQuerySnapshot.Documents.Last();
                         Dictionary<string, object> details = documentSnapshot.ToDictionary();
                         newChore.transform.GetChild(3).GetComponent<TMP_Text>().text = "Times Done: " + choreDetailListQuerySnapshot.Documents.Count().ToString();
-                        newChore.transform.GetChild(4).GetComponent<TMP_Text>().text = "Last Done: " + details["Date"].ToString();
-                        newChore.transform.GetChild(5).GetComponent<TMP_Text>().text = "By: " + details["Done By"].ToString();
+                        newChore.transform.GetChild(4).GetComponent<TMP_Text>().text = "Last Done: " + details["Date"];
+                        newChore.transform.GetChild(5).GetComponent<TMP_Text>().text = "By: " + details["Done By"];
                     }
                     else
                     {

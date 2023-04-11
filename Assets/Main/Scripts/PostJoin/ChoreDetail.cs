@@ -19,22 +19,34 @@ public class ChoreDetail : MonoBehaviour
     public GameObject choreNav;
     public GameObject fullDetailPanel;
     public GameObject individualDetailPanel;
+    public GameObject logDonePanel;
     public TMP_Text individualDetailDate;
     public TMP_InputField individualDetailDoneBy;
     public TMP_InputField individualDetailNotes;
     public TMP_Text choreTitle;
 
-    void Start(){
+    public TMP_InputField addlNotes;
+    public TMP_Text dateText;
+    public TMP_Text choreNameText;
+
+    private string choreName;
+
+    void Start()
+    {
         db = FirebaseFirestore.DefaultInstance;
 
-        string choreName  = singleChoreDetail.GetComponent<SingleChoreDetail>().getTitle();
+        choreName  = singleChoreDetail.GetComponent<SingleChoreDetail>().getTitle();
         choreTitle.text  = choreName;
 
+        loadChores();
+    }
+
+    public void loadChores()
+    {
         Query choreDetailListQuery = db.Collection($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores/{choreName}/Details");
         choreDetailListQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             QuerySnapshot choreDetailListQuerySnapshot = task.Result;
-            Debug.Log(choreDetailListQuerySnapshot.Documents.Count());
             foreach (DocumentSnapshot documentSnapshot in choreDetailListQuerySnapshot.Documents)
             {
                 GameObject choreLog = GameObject.Instantiate(DataTemplate) as GameObject;
@@ -47,6 +59,29 @@ public class ChoreDetail : MonoBehaviour
                 choreLog.GetComponent<Button>().onClick.AddListener(() => detailClicked(details["Done By"].ToString(), details["Date"].ToString(), details["Notes"].ToString()));
                 choreLog.SetActive(true);
             }
+        });
+    }
+
+    public void LogChoreDone()
+    {
+        Query choreDetailListQuery = db.Collection($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores/{choreName}/Details");
+        choreDetailListQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        {
+            QuerySnapshot choreDetailListQuerySnapshot = task.Result;
+
+            DocumentReference groupRef = db.Document($"Groups/{foundChoreList.GetComponent<FoundChoreList>().getCode()}/Chores/{choreName}/Details/{choreDetailListQuerySnapshot.Documents.Count() + 1}");
+
+            Dictionary<string, object> newChoreDone = new Dictionary<string, object>
+            {
+                { "Done By", PlayerPrefs.GetString("DisplayName") },
+                { "Date", DateTime.Now.ToString() },
+                { "Notes", addlNotes.text }
+            };
+
+            groupRef.SetAsync(newChoreDone).ContinueWithOnMainThread(task => {
+                Debug.Log("Chore Log Successfully Added");
+                backToJoinGroup();
+            });
         });
     }
 
@@ -65,9 +100,19 @@ public class ChoreDetail : MonoBehaviour
         individualDetailPanel.SetActive(false);
     }
 
-    public void toLogDone()
+    public void showLogDone()
     {
-        choreNav.GetComponent<ChoreNav>().GoToPreviousScene();
+        dateText.text = DateTime.Now.ToString();
+        choreNameText.text = choreName;
+        fullDetailPanel.SetActive(false);
+        logDonePanel.SetActive(true);
+    }
+
+    public void backToChoreDetail()
+    {
+        fullDetailPanel.SetActive(true);
+        logDonePanel.SetActive(false);
+        individualDetailPanel.SetActive(false);
     }
 
     public void backToJoinGroup()
